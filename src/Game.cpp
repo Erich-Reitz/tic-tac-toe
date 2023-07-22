@@ -1,10 +1,12 @@
 #include "Game.hpp"
+#include "Config.hpp"
 
 Game::Game() {
     SDL_Point size = {1280, 720};
     /** TODO: Fix order dependency */
     this->window = std::make_unique<Window>("TicTacToe", size, &sharedContext);
     this->sharedContext.window = this->window.get();
+    this->sharedContext.config = new tt::Config();
     this->board = std::make_unique<TicTacToeBoard>(&sharedContext);
 }
 
@@ -13,7 +15,6 @@ void Game::Update() {
 }
 
 void Game::HandleInput() {
-
 }
 
 void Game::Render() {

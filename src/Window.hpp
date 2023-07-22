@@ -16,6 +16,7 @@ class Window {
     SDL_Window *GetWindow()  ;
     SDL_Renderer *Renderer() ;
     SDL_Point Center() const;
+
     void BeginDraw();
     void EndDraw();
     void Update();

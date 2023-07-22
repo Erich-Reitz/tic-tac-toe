@@ -2,10 +2,6 @@
 
 #include <SDL2/SDL.h>
 
-#define BLACK 0, 0, 0, 0
-#define WHITE 255, 255, 255, 255
-#define BLUE 173, 216, 230, 255
-
 
 class TicTacToeSquare {
   public:

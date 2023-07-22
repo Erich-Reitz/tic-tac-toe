@@ -3,10 +3,10 @@
 
 #include "Shared_Context.hpp"
 #include "TicTacToeBoard.hpp"
+#include "SetRenderDrawColor.hpp"
 
-#define SQUARE_WIDTH 100
 
-namespace tic_tac {
+namespace tt {
 
 typedef std::pair<SDL_Point, SDL_Point> LINE;
 SDL_Rect createRectFromLine(SDL_Point start, SDL_Point end, int thickness) {
@@ -51,34 +51,32 @@ std::vector<SDL_Rect> createLines( SDL_Point center, int squareWidth, int thickn
 
 TicTacToeBoard::TicTacToeBoard(SharedContext *sharedContext) : context(sharedContext) {
     auto center = context->window->Center();
-    this->lines = tic_tac::createLines(center, SQUARE_WIDTH);
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            const auto centerOfSquare = SDL_Point{center.x + (j - 1) *SQUARE_WIDTH, center.y + (i - 1) *SQUARE_WIDTH};
-            squares[i][j] = std::make_unique<TicTacToeSquare>(centerOfSquare, SQUARE_WIDTH);
+    this->lines = tt::createLines(center, tt::Config::SQUARE_WIDTH, tt::Config::LINE_THICKNESS);
+    for (int i = 0; i < tt::Config::ROWS; i++) {
+        for (int j = 0; j < tt::Config::COLS; j++) {
+            const auto centerOfSquare = SDL_Point{center.x + (j - 1) *tt::Config::SQUARE_WIDTH, center.y + (i - 1) *tt::Config::SQUARE_WIDTH};
+            squares[i][j] = std::make_unique<TicTacToeSquare>(centerOfSquare, tt::Config::SQUARE_WIDTH);
         }
     }
 }
 
 void TicTacToeBoard::Render(SDL_Renderer *renderer) {
     /** TODO: Add some kind of Z-indexing to not have to get the order right **/
-
     renderSquares(renderer);
     renderLines(renderer);
-
 }
 
 void TicTacToeBoard::renderLines(SDL_Renderer *renderer) {
-    SDL_SetRenderDrawColor(renderer, WHITE);
+    tt::SetRenderDrawColor(renderer, context->config->LineColor() );
     for (auto &line : lines) {
         SDL_RenderFillRect(renderer, &line);
     }
 }
 
 void TicTacToeBoard::renderSquares(SDL_Renderer *renderer) {
-    SDL_SetRenderDrawColor(renderer, BLACK);
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
+    tt::SetRenderDrawColor(renderer, context->config->SquareColor() );
+    for (int i = 0; i < tt::Config::ROWS; i++) {
+        for (int j = 0; j < tt::Config::COLS; j++) {
             const auto &square = squares.at(i).at(j);
             square->render(renderer);
         }

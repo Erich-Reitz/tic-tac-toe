@@ -5,12 +5,10 @@
 #include <iostream>
 #include "Window.hpp"
 #include "flush_exit_failure.hpp"
+#include "SetRenderDrawColor.hpp"
 
 #define EXIT_GRACEFUL this->done = true;
 
-#define BLACK 255, 255, 255, 255
-#define WHITE 255, 255, 255, 255
-#define BLUE 173, 216, 230, 255
 
 
 Window::Window() {}
@@ -35,7 +33,7 @@ SDL_Renderer *Window::Renderer() {
 }
 
 void Window::BeginDraw() {
-    SDL_SetRenderDrawColor( renderer, BLUE );
+    tt::SetRenderDrawColor(renderer, context->config->BackgroundColor()) ;
     SDL_RenderClear(renderer);
 }
 

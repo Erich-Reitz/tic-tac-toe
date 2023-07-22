@@ -8,7 +8,7 @@
 #include "Game.hpp"
 
 
-namespace tic_tac_toe {
+namespace tt {
 
 void SDL_INIT() {
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
@@ -33,5 +33,5 @@ int main() {
 }
 
 int main() {
-    tic_tac_toe::main();
+    tt::main();
 }

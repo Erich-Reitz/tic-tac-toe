@@ -8,12 +8,7 @@
 
 #include "TicTacToeSquare.hpp"
 #include "Shared_Context.hpp"
-
-#define ROWS 3
-#define COLS  3
-#define WHITE 255, 255, 255, 255
-
-
+#include "Config.hpp"
 
 
 class TicTacToeBoard {
@@ -27,8 +22,7 @@ class TicTacToeBoard {
     void renderSquares(SDL_Renderer *renderer) ;
     void renderLines(SDL_Renderer *renderer) ;
 
-
-    std::array<std::array<std::unique_ptr<TicTacToeSquare>, COLS>, ROWS> squares;
+    std::array<std::array<std::unique_ptr<TicTacToeSquare>, tt::Config::COLS>, tt::Config::ROWS> squares;
     SharedContext *context = nullptr;
     std::vector<SDL_Rect> lines;
 

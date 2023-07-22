@@ -30,7 +30,7 @@ clean:
 	rm -f ${PROGRAM_NAME} $(OBJ_FILES)
 
 format:
-	astyle --style=google ${ASTYLEOPS} ${SRC_DIR}/*.*pp 
+	astyle --style=google ${ASTYLEOPS} ${SRC_DIR}/*.*pp -xe
 	
 	rm -f ${SRC_DIR}/*.orig ${SRC_DIR}/pieces/*.orig
 
