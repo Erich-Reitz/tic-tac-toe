@@ -24,6 +24,8 @@ class Config {
     const SDL_Color LIGHT_PINK = {M_LIGHT_PINK};
     const SDL_Color LIGHT_YELLOW = {M_LIGHT_YELLOW};
 
+
+
     SDL_Color BackgroundColor() {
         return BLUE;
     }
@@ -34,6 +36,14 @@ class Config {
 
     SDL_Color SquareColor() {
         return BLACK;
+    }
+
+    SDL_Color XColor() {
+        return LIGHT_PINK;
+    }
+
+    SDL_Color OColor() {
+        return LIGHT_YELLOW;
     }
 
 

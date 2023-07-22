@@ -2,8 +2,8 @@
 
 namespace tt {
 struct Position {
-    int x;
-    int y;
+    int r ;
+    int c;
 };
 }
 

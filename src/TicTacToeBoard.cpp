@@ -5,6 +5,7 @@
 #include "TicTacToeBoard.hpp"
 #include "SetRenderDrawColor.hpp"
 #include "Position.hpp"
+#include "Player.hpp"
 
 
 namespace tt {
@@ -59,7 +60,7 @@ TicTacToeBoard::TicTacToeBoard(SharedContext *sharedContext) : context(sharedCon
             auto squareX = center.x + (col - 1) *tt::Config::SQUARE_WIDTH;
             auto squareY = center.y + (row - 1) *tt::Config::SQUARE_WIDTH;
             const auto centerOfSquare = SDL_Point{squareX, squareY};
-            squares[row][col] = std::make_unique<TicTacToeSquare>(pos, centerOfSquare, tt::Config::SQUARE_WIDTH);
+            squares[row][col] = std::make_unique<TicTacToeSquare>(pos, centerOfSquare, tt::Config::SQUARE_WIDTH, context);
         }
     }
 }
@@ -69,20 +70,25 @@ TicTacToeBoard::TicTacToeBoard(SharedContext *sharedContext) : context(sharedCon
 void TicTacToeBoard::Update() {
     while (context->mouseClicks.size() != 0) {
         auto click = context->mouseClicks.front();
-        HandleClick(click);
+        handleClick(click);
         context->mouseClicks.pop_front();
     }
 }
 
-void TicTacToeBoard::HandleClick(SDL_Point point) {
-    for (const auto &square : Squares()) {
+void TicTacToeBoard::handleClick(SDL_Point point) {
+    for (const auto &square : allSquares()) {
         if (square.get().WithinBounds(point)) {
-            // this->handleClickOnSquare(square.get().Position());
+            this->handleClickOnSquare(square.get().Position());
         }
     }
 }
+void TicTacToeBoard::handleClickOnSquare(const tt::Position &pos) {
+    auto &square = squares.at(pos.r).at(pos.c);
+    square->SetOccupiedBy(currentPlayerIsX ? tt::SquareState::X : tt::SquareState::O);
+    currentPlayerIsX = !currentPlayerIsX;
+}
 
-std::vector<std::reference_wrapper<const TicTacToeSquare>> TicTacToeBoard::Squares() const {
+std::vector<std::reference_wrapper<const TicTacToeSquare>> TicTacToeBoard::allSquares() const {
     std::vector<std::reference_wrapper<const TicTacToeSquare>> flattened;
     flattened.reserve(tt::Config::ROWS * tt::Config::COLS);
     for (const auto &row : this->squares) {
@@ -108,7 +114,7 @@ void TicTacToeBoard::renderLines(SDL_Renderer *renderer) const {
 
 void TicTacToeBoard::renderSquares(SDL_Renderer *renderer) const {
     tt::SetRenderDrawColor(renderer, context->config->SquareColor() );
-    for (const auto &square : Squares()) {
-        square.get().render(renderer);
+    for (const auto &square : allSquares()) {
+        square.get().Render(renderer);
     }
 }

@@ -23,12 +23,13 @@ class TicTacToeBoard {
   private:
     void renderSquares(SDL_Renderer *renderer) const;
     void renderLines(SDL_Renderer *renderer) const;
-    void HandleClick(SDL_Point point) ;
-    // void handleClickOnSquare(const tt::Position &pos)  {};
-    std::vector<std::reference_wrapper<const TicTacToeSquare>> Squares() const ;
+    void handleClick(SDL_Point point) ;
+    void handleClickOnSquare(const tt::Position &pos);
+    std::vector<std::reference_wrapper<const TicTacToeSquare>> allSquares() const ;
 
     std::array<std::array<std::unique_ptr<TicTacToeSquare>, tt::Config::COLS>, tt::Config::ROWS> squares;
     SharedContext *context = nullptr;
     std::vector<SDL_Rect> lines;
+    bool currentPlayerIsX = true;
 
 };
