@@ -25,15 +25,15 @@ class TicTacToeSquare {
         switch (state) {
         case tt::SquareState::X:
             tt::SetRenderDrawColor(renderer, context->config->XColor());
+            SDL_RenderFillRect(renderer, &area);
             break;
         case tt::SquareState::O:
             tt::SetRenderDrawColor(renderer, context->config->OColor());
+            SDL_RenderFillRect(renderer, &area);
             break;
-        case tt::SquareState::EMPTY:
-            tt::SetRenderDrawColor(renderer, context->config->SquareColor());
+        default:
             break;
         }
-        SDL_RenderFillRect(renderer, &area);
     }
 
     bool WithinBounds(SDL_Point point) const {
