@@ -64,6 +64,8 @@ TicTacToeBoard::TicTacToeBoard(SharedContext *sharedContext) : context(sharedCon
     }
 }
 
+
+
 void TicTacToeBoard::Update() {
     while (context->mouseClicks.size() != 0) {
         auto click = context->mouseClicks.front();
@@ -75,7 +77,7 @@ void TicTacToeBoard::Update() {
 void TicTacToeBoard::HandleClick(SDL_Point point) {
     for (const auto &square : Squares()) {
         if (square.get().WithinBounds(point)) {
-            std::cout << "Clicked square at " << square.get().Position().x << ", " << square.get().Position().y << std::endl;
+            // this->handleClickOnSquare(square.get().Position());
         }
     }
 }

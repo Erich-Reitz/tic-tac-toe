@@ -35,6 +35,8 @@ class Config {
     SDL_Color SquareColor() {
         return BLACK;
     }
+
+
 };
 
 
