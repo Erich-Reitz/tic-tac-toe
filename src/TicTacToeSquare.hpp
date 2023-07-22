@@ -1,4 +1,4 @@
-
+#pragma once
 
 #include <SDL2/SDL.h>
 
@@ -6,6 +6,7 @@
 #include "SquareState.hpp"
 #include "Config.hpp"
 #include "SetRenderDrawColor.hpp"
+#include "Shared_Context.hpp"
 
 class TicTacToeSquare {
   public:

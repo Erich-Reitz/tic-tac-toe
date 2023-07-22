@@ -21,7 +21,7 @@ Window::Window( std::string w_title, SDL_Point w_size, SharedContext *sharedCont
         printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
         flush_exit_failure();
     }
-    this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED );
 }
 
 SDL_Window *Window::GetWindow()  {

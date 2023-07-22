@@ -1,3 +1,4 @@
+#pragma once
 #include <array>
 
 #include <SDL2/SDL.h>
@@ -16,7 +17,7 @@ class TicTacToeBoard {
   public:
 
     TicTacToeBoard(SharedContext *sharedContext);
-    void Render(SDL_Renderer *renderer) const;
+    void Render() const;
     void Update() ;
 
     ~TicTacToeBoard() = default;
@@ -35,5 +36,6 @@ class TicTacToeBoard {
     SharedContext *context = nullptr;
     std::vector<SDL_Rect> lines;
     bool currentPlayerIsX = true;
+
 
 };

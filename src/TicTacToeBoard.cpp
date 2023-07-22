@@ -61,7 +61,7 @@ TicTacToeBoard::TicTacToeBoard(SharedContext *sharedContext) : context(sharedCon
             auto squareY = center.y + (row - 1) *tt::Config::SQUARE_WIDTH;
             const auto centerOfSquare = SDL_Point{squareX, squareY};
             auto const adjustedSqrWidth = static_cast<int> (tt::Config::SQUARE_WIDTH * .95);
-            squares[row][col] = std::make_unique<TicTacToeSquare>(pos, centerOfSquare, adjustedSqrWidth , context);
+            squares[row][col] = std::make_unique<TicTacToeSquare>(pos, centerOfSquare, adjustedSqrWidth, context);
         }
     }
 }
@@ -109,8 +109,9 @@ std::vector<std::reference_wrapper<const TicTacToeSquare>> TicTacToeBoard::allSq
     return flattened;
 }
 
-void TicTacToeBoard::Render(SDL_Renderer *renderer) const {
+void TicTacToeBoard::Render() const {
     /** TODO: Add some kind of Z-indexing to not have to get the order right **/
+    auto renderer = context->window->Renderer();
     renderSquares(renderer);
     renderLines(renderer);
 }

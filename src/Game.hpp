@@ -6,6 +6,7 @@
 #include "Window.hpp"
 #include "TicTacToeBoard.hpp"
 #include "Shared_Context.hpp"
+#include "StateManager.hpp"
 
 
 class Game {
@@ -19,9 +20,16 @@ class Game {
 
 
   private:
-    std::unique_ptr<TicTacToeBoard> board;
+    void UpdateAndPrintFPS();
+    void UpdateWindowAndState();
+
+
     std::unique_ptr<Window> window;
     SharedContext sharedContext;
+    std::unique_ptr<StateManager> stateMgr;
+    int fps = 0;
+    int frameCount = 0;
+    Uint32 lastFPSTime = 0;
 
 
 };
