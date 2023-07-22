@@ -83,10 +83,19 @@ void TicTacToeBoard::handleClick(SDL_Point point) {
     }
 }
 void TicTacToeBoard::handleClickOnSquare(const tt::Position &pos) {
-    auto &square = squares.at(pos.r).at(pos.c);
-    square->SetOccupiedBy(currentPlayerIsX ? tt::SquareState::X : tt::SquareState::O);
+    auto &square = squareAt(pos);
+    if (square.IsOccupied()) {
+        return;
+    }
+    square.SetOccupiedBy(currentPlayerIsX ? tt::SquareState::X : tt::SquareState::O);
     currentPlayerIsX = !currentPlayerIsX;
 }
+
+
+TicTacToeSquare &TicTacToeBoard::squareAt(const tt::Position &pos) {
+    return *squares.at(pos.r).at(pos.c);
+}
+
 
 std::vector<std::reference_wrapper<const TicTacToeSquare>> TicTacToeBoard::allSquares() const {
     std::vector<std::reference_wrapper<const TicTacToeSquare>> flattened;

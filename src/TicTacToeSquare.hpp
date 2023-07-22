@@ -44,7 +44,9 @@ class TicTacToeSquare {
         return pos;
     }
 
-
+    bool IsOccupied() const {
+        return state != tt::SquareState::EMPTY;
+    }
 
     void SetOccupiedBy(tt::SquareState newState) {
         state = newState;

@@ -25,6 +25,10 @@ class TicTacToeBoard {
     void renderLines(SDL_Renderer *renderer) const;
     void handleClick(SDL_Point point) ;
     void handleClickOnSquare(const tt::Position &pos);
+
+    TicTacToeSquare &squareAt(const tt::Position &pos) ;
+
+
     std::vector<std::reference_wrapper<const TicTacToeSquare>> allSquares() const ;
 
     std::array<std::array<std::unique_ptr<TicTacToeSquare>, tt::Config::COLS>, tt::Config::ROWS> squares;
