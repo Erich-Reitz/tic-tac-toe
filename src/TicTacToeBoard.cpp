@@ -60,7 +60,8 @@ TicTacToeBoard::TicTacToeBoard(SharedContext *sharedContext) : context(sharedCon
             auto squareX = center.x + (col - 1) *tt::Config::SQUARE_WIDTH;
             auto squareY = center.y + (row - 1) *tt::Config::SQUARE_WIDTH;
             const auto centerOfSquare = SDL_Point{squareX, squareY};
-            squares[row][col] = std::make_unique<TicTacToeSquare>(pos, centerOfSquare, tt::Config::SQUARE_WIDTH, context);
+            auto const adjustedSqrWidth = static_cast<int> (tt::Config::SQUARE_WIDTH * .95);
+            squares[row][col] = std::make_unique<TicTacToeSquare>(pos, centerOfSquare, adjustedSqrWidth , context);
         }
     }
 }
