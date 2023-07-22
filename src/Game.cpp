@@ -12,12 +12,8 @@ Game::Game() {
 }
 
 void Game::Update() {
-    // Update the window and the state manager
     UpdateWindowAndState();
-    // Update FPS and print it every second
     UpdateAndPrintFPS();
-    // Optionally, use the deltaTime for smooth movement or time-based updates
-    // UpdateObjects(deltaTime);
 }
 
 
@@ -28,14 +24,13 @@ void Game::UpdateWindowAndState() {
 }
 
 void Game::UpdateAndPrintFPS() {
-    // Calculate FPS
     frameCount++;
     Uint32 currentFrameTime = SDL_GetTicks();
-    if (currentFrameTime - lastFPSTime >= 1000) { // Every 1000ms (1 second)
-        fps = frameCount;
+    Uint32 scale = 1;
+    if (currentFrameTime - lastFPSTime >= 1000 / scale) {
+        fps = frameCount * scale;
         frameCount = 0;
         lastFPSTime = currentFrameTime;
-        // Optionally, you can print or display the FPS value somewhere
         std::cout << "FPS: " << fps << std::endl;
     }
 }
