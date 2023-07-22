@@ -5,20 +5,24 @@
 #define M_BLACK 0, 0, 0, 0
 #define M_WHITE 255, 255, 255, 255
 #define M_BLUE 173, 216, 230, 255
+#define M_LIGHT_PINK 255, 182, 193, 255
+#define M_LIGHT_YELLOW 255, 255, 224, 255
 
 
 namespace tt {
 class Config {
   public:
-    Config() : WHITE{M_WHITE}, BLUE{M_BLUE}, BLACK{M_BLACK} {};
+    Config() {};
     static constexpr int ROWS = 3;
     static constexpr int COLS = 3;
     static constexpr int SQUARE_WIDTH = 100;
     static constexpr int LINE_THICKNESS = 3;
 
-    const SDL_Color WHITE;
-    const SDL_Color BLUE;
-    const SDL_Color BLACK ;
+    const SDL_Color WHITE = {M_WHITE};
+    const SDL_Color BLUE = {M_BLUE};
+    const SDL_Color BLACK = {M_BLACK};
+    const SDL_Color LIGHT_PINK = {M_LIGHT_PINK};
+    const SDL_Color LIGHT_YELLOW = {M_LIGHT_YELLOW};
 
     SDL_Color BackgroundColor() {
         return BLUE;
