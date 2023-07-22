@@ -122,7 +122,6 @@ void TicTacToeBoard::renderLines(SDL_Renderer *renderer) const {
 }
 
 void TicTacToeBoard::renderSquares(SDL_Renderer *renderer) const {
-    tt::SetRenderDrawColor(renderer, context->config->SquareColor() );
     for (const auto &square : allSquares()) {
         square.get().Render(renderer);
     }
