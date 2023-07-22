@@ -53,7 +53,7 @@ class TicTacToeSquare {
     }
 
   private:
-    tt::Position pos;
+    tt::Position pos = {0, 0};
     SDL_Rect area = {0, 0, 0, 0};
     tt::SquareState state = tt::SquareState::EMPTY;
     SharedContext *context = nullptr;
