@@ -32,5 +32,5 @@ clean:
 format:
 	astyle --style=google ${ASTYLEOPS} ${SRC_DIR}/*.*pp -xe
 	
-	rm -f ${SRC_DIR}/*.orig ${SRC_DIR}/pieces/*.orig
+	rm -f ${SRC_DIR}/*.orig
 
