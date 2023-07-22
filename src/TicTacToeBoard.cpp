@@ -4,6 +4,7 @@
 #include "Shared_Context.hpp"
 #include "TicTacToeBoard.hpp"
 #include "SetRenderDrawColor.hpp"
+#include "Position.hpp"
 
 
 namespace tt {
@@ -52,33 +53,60 @@ std::vector<SDL_Rect> createLines( SDL_Point center, int squareWidth, int thickn
 TicTacToeBoard::TicTacToeBoard(SharedContext *sharedContext) : context(sharedContext) {
     auto center = context->window->Center();
     this->lines = tt::createLines(center, tt::Config::SQUARE_WIDTH, tt::Config::LINE_THICKNESS);
-    for (int i = 0; i < tt::Config::ROWS; i++) {
-        for (int j = 0; j < tt::Config::COLS; j++) {
-            const auto centerOfSquare = SDL_Point{center.x + (j - 1) *tt::Config::SQUARE_WIDTH, center.y + (i - 1) *tt::Config::SQUARE_WIDTH};
-            squares[i][j] = std::make_unique<TicTacToeSquare>(centerOfSquare, tt::Config::SQUARE_WIDTH);
+    for (int row = 0; row < tt::Config::ROWS; row++) {
+        for (int col = 0; col < tt::Config::COLS; col++) {
+            tt::Position pos = {row, col};
+            auto squareX = center.x + (col - 1) *tt::Config::SQUARE_WIDTH;
+            auto squareY = center.y + (row - 1) *tt::Config::SQUARE_WIDTH;
+            const auto centerOfSquare = SDL_Point{squareX, squareY};
+            squares[row][col] = std::make_unique<TicTacToeSquare>(pos, centerOfSquare, tt::Config::SQUARE_WIDTH);
         }
     }
 }
 
-void TicTacToeBoard::Render(SDL_Renderer *renderer) {
+void TicTacToeBoard::Update() {
+    while (context->mouseClicks.size() != 0) {
+        auto click = context->mouseClicks.front();
+        HandleClick(click);
+        context->mouseClicks.pop_front();
+    }
+}
+
+void TicTacToeBoard::HandleClick(SDL_Point point) {
+    for (const auto &square : Squares()) {
+        if (square.get().WithinBounds(point)) {
+            std::cout << "Clicked square at " << square.get().Position().x << ", " << square.get().Position().y << std::endl;
+        }
+    }
+}
+
+std::vector<std::reference_wrapper<const TicTacToeSquare>> TicTacToeBoard::Squares() const {
+    std::vector<std::reference_wrapper<const TicTacToeSquare>> flattened;
+    flattened.reserve(tt::Config::ROWS * tt::Config::COLS);
+    for (const auto &row : this->squares) {
+        for (const auto &elem : row) {
+            flattened.emplace_back(*elem);
+        }
+    }
+    return flattened;
+}
+
+void TicTacToeBoard::Render(SDL_Renderer *renderer) const {
     /** TODO: Add some kind of Z-indexing to not have to get the order right **/
     renderSquares(renderer);
     renderLines(renderer);
 }
 
-void TicTacToeBoard::renderLines(SDL_Renderer *renderer) {
+void TicTacToeBoard::renderLines(SDL_Renderer *renderer) const {
     tt::SetRenderDrawColor(renderer, context->config->LineColor() );
     for (auto &line : lines) {
         SDL_RenderFillRect(renderer, &line);
     }
 }
 
-void TicTacToeBoard::renderSquares(SDL_Renderer *renderer) {
+void TicTacToeBoard::renderSquares(SDL_Renderer *renderer) const {
     tt::SetRenderDrawColor(renderer, context->config->SquareColor() );
-    for (int i = 0; i < tt::Config::ROWS; i++) {
-        for (int j = 0; j < tt::Config::COLS; j++) {
-            const auto &square = squares.at(i).at(j);
-            square->render(renderer);
-        }
+    for (const auto &square : Squares()) {
+        square.get().render(renderer);
     }
 }

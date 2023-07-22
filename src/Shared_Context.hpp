@@ -1,9 +1,16 @@
 #pragma once
+
+#include <deque>
+
 #include "Window.hpp"
 #include "Config.hpp"
 
 class Window;
 class Config;
+
+enum class GameState {
+    PLAYING
+};
 
 struct SharedContext {
     SharedContext():
@@ -13,8 +20,15 @@ struct SharedContext {
         return config->BackgroundColor();
     }
 
+    void AddMouseClick(SDL_Point point) {
+        mouseClicks.emplace_back(point);
+    }
 
 
     Window *window;
     tt::Config *config;
+    GameState gameState = GameState::PLAYING;
+
+    std::deque<SDL_Point> mouseClicks = {};
+
 };

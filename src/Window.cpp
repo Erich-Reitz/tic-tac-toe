@@ -48,6 +48,7 @@ SDL_Point Window::Center() const {
 }
 
 void Window::Update() {
+    auto lastMouseState = this->m_down;
     SDL_Event e;
     while( SDL_PollEvent( &e ) ) {
         switch (e.type) {
@@ -56,6 +57,10 @@ void Window::Update() {
             break;
         case SDL_MOUSEBUTTONUP:
             this->m_down = false;
+            /** TODO: Bad. Delta function needed? lastMouseState could be struct with previous bound info */
+            if (lastMouseState != this->m_down) {
+                this->context->AddMouseClick(SDL_Point{e.button.x, e.button.y});
+            }
             break;
         case SDL_QUIT:
             EXIT_GRACEFUL;

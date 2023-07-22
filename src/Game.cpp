@@ -12,6 +12,9 @@ Game::Game() {
 
 void Game::Update() {
     this->window->Update();
+    if (this->sharedContext.gameState == GameState::PLAYING) {
+        this->board->Update();
+    }
 }
 
 void Game::HandleInput() {
