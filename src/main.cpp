@@ -1,8 +1,6 @@
 
 #include <SDL2/SDL.h>
-#include <stdio.h>
-#include "iostream"
-
+#include <cstdio>
 
 #include "flush_exit_failure.hpp"
 #include "Game.hpp"

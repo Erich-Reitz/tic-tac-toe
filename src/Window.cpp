@@ -2,7 +2,6 @@
 #include <SDL2/SDL.h>
 
 #include <string>
-#include <iostream>
 #include "Window.hpp"
 #include "flush_exit_failure.hpp"
 #include "SetRenderDrawColor.hpp"
@@ -11,8 +10,8 @@
 
 
 
-Window::Window() {}
-Window::Window( std::string w_title, SDL_Point w_size, SharedContext *sharedContext) : context(sharedContext) {
+Window::Window() = default;
+Window::Window( const std::string &w_title, SDL_Point w_size, SharedContext *sharedContext) : context(sharedContext) {
     int width = w_size.x;
     int height = w_size.y;
     this->window = SDL_CreateWindow( w_title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
@@ -22,10 +21,6 @@ Window::Window( std::string w_title, SDL_Point w_size, SharedContext *sharedCont
         flush_exit_failure();
     }
     this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED );
-}
-
-SDL_Window *Window::GetWindow()  {
-    return window;
 }
 
 SDL_Renderer *Window::Renderer() {

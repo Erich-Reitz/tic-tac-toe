@@ -18,10 +18,6 @@ class TicTacToeSquare {
     }
     ~TicTacToeSquare() = default;
 
-    SDL_Rect Area() const {
-        return area;
-    }
-
     void Render(SDL_Renderer *renderer) const {
         switch (state) {
         case tt::SquareState::X:

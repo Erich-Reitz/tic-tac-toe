@@ -13,19 +13,19 @@ PROGRAM_NAME := tic-tac-toe
 all: $(OBJ_FILES)
 	$(CXX) $(CXXFLAGS) $(OBJ_FILES) $(LDFLAGS) -o $(PROGRAM_NAME)
 
-make: $(OBJ_FILES)
+make_and_run: $(OBJ_FILES)
 	$(CXX) $(CXXFLAGS) $(OBJ_FILES) $(LDFLAGS) -o $(PROGRAM_NAME)
 	./$(PROGRAM_NAME)
 
 tic-tac-toe: $(OBJ_FILES)
-	$(CXX) -o ${PROGRAM_NAME} $(OBJ_FILES) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o ${PROGRAM_NAME} $(OBJ_FILES) $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $^
+	@mkdir -p $(@D)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 run: $(PROGRAM_NAME)
 	./$(PROGRAM_NAME)
-
 clean:
 	rm -f ${PROGRAM_NAME} $(OBJ_FILES)
 

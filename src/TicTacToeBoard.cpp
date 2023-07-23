@@ -5,7 +5,7 @@
 #include "TicTacToeBoard.hpp"
 #include "SetRenderDrawColor.hpp"
 #include "Position.hpp"
-#include "Player.hpp"
+
 
 
 namespace tt {

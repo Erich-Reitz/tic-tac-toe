@@ -27,8 +27,8 @@ class Game {
     std::unique_ptr<Window> window;
     SharedContext sharedContext;
     std::unique_ptr<StateManager> stateMgr;
-    int fps = 0;
-    int frameCount = 0;
+    Uint32 fps = 0;
+    Uint32 frameCount = 0;
     Uint32 lastFPSTime = 0;
 
 

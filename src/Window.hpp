@@ -6,21 +6,20 @@
 
 #include "Shared_Context.hpp"
 
-class SharedContext;
+struct SharedContext;
 
 class Window {
   public:
     Window();
-    Window( std::string w_title, SDL_Point w_size, SharedContext *sharedContext);
+    Window( const std::string &w_title, SDL_Point w_size, SharedContext *sharedContext);
     ~Window();
-    SDL_Window *GetWindow()  ;
     SDL_Renderer *Renderer() ;
-    SDL_Point Center() const;
+    [[nodiscard]] SDL_Point Center() const;
 
     void BeginDraw();
     void EndDraw();
     void Update();
-    bool Done() const;
+    [[nodiscard]] bool Done() const;
   private:
     //The window we'll be rendering to
     SDL_Window *window = nullptr;
