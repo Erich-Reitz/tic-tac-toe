@@ -23,7 +23,7 @@ class AI_Player {
             return 0;
         }
         if (isMaximizingPlayer) {
-            int value = -1;
+            int value = -10000;
             for (const auto pos : board.FreeSquares()) {
                 board.PerformTurn(pos, selectedState);
                 value = std::max(value, minimax(board, depth + 1, false));
@@ -31,7 +31,7 @@ class AI_Player {
             }
             return value;
         } else {
-            int value = 1;
+            int value = 10000;
             for (const auto pos : board.FreeSquares()) {
                 board.PerformTurn(pos, context->userRequestedState);
                 value = std::min(value, minimax(board, depth + 1, false));
