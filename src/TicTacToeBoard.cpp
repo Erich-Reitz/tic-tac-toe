@@ -1,8 +1,9 @@
 
 #include <SDL2/SDL.h>
 
+#include <algorithm>
 
-
+#include "tictactoe_exceptions.hpp"
 #include "Shared_Context.hpp"
 #include "TicTacToeBoard.hpp"
 #include "SetRenderDrawColor.hpp"
@@ -94,12 +95,70 @@ std::optional<tt::Position> TicTacToeBoard::SquareOnBoard(SDL_Point point) const
 
 void TicTacToeBoard::PerformTurn(const tt::Position &pos, SquareState state ) {
     squareAt(pos).SetOccupiedBy(state);
-    if (gameState == GameState::USER_TURN) {
-        gameState = GameState::AI_TURN;
+    evaluateNewState();
+}
+
+
+void TicTacToeBoard::evaluateNewState()  {
+    for (int r = 0; r < Config::ROWS; r++) {
+        if (std::all_of(squares[r].begin(), squares[r].end(), [&](const auto &squarePtr) {
+        const auto firstSqrState = squares[r][0]->State();
+            return squarePtr->State() == firstSqrState && squarePtr->NotEmpty();
+        })) {
+            setWinnerFromSquareState(r, 0);
+            return;
+        }
+    }
+    for (int c = 0; c < Config::COLS; c++) {
+        if (std::all_of(squares.begin(), squares.end(), [&](const auto &row) {
+        const auto firstSqrState = squares[0][c]->State();
+            return row[c]->State() == firstSqrState && row[c]->NotEmpty();
+        })) {
+            setWinnerFromSquareState(0, c);
+            return;
+        }
+    }
+    bool mainDiagonal = true;
+    for (int i = 0; i < Config::ROWS; ++i) {
+        if (squares[i][i]->State() != squares[0][0]->State() || squares[i][i]->IsEmpty() ) {
+            mainDiagonal = false;
+            break;
+        }
+    }
+    if (mainDiagonal) {
+        setWinnerFromSquareState(0, 0);
+        return;
+    }
+    bool secondaryDiagonal = true;
+    for (int i = 0; i < Config::ROWS; ++i) {
+        if (squares[i][Config::COLS - i - 1]->State() != squares[0][Config::COLS - 1]->State() || squares[i][Config::COLS - i - 1]->IsEmpty() ) {
+            secondaryDiagonal = false;
+            break;
+        }
+    }
+    if (secondaryDiagonal) {
+        setWinnerFromSquareState(0, Config::COLS - 1);
+        return;
+    }
+    if (std::all_of(squares.begin(), squares.end(), [&](const auto &row) {
+    return std::all_of(row.begin(), row.end(), [](const auto &squarePtr) {
+        return squarePtr->NotEmpty();
+        });
+    })) {
+        gameState = GameState::DRAW;
+        return;
+    }
+    gameState = gameState == USER_TURN ? AI_TURN : USER_TURN;
+}
+
+void TicTacToeBoard::setWinnerFromSquareState(int i, int j) {
+    if (squareAt(i, j).State() == context->userRequestedState) {
+        gameState = GameState::USER_WON;
     } else {
-        gameState = GameState::USER_TURN;
+        gameState = GameState::AI_WON;
     }
 }
+
 
 bool TicTacToeBoard::IsOccupied(const tt::Position &pos) const {
     return squareAt(pos).IsOccupied();
@@ -108,6 +167,15 @@ bool TicTacToeBoard::IsOccupied(const tt::Position &pos) const {
 
 TicTacToeSquare &TicTacToeBoard::squareAt(const tt::Position &pos) const {
     return *squares.at(pos.r).at(pos.c);
+}
+
+TicTacToeSquare &TicTacToeBoard::squareAt(int r, int c) const {
+    return *squares.at(r).at(c);
+}
+
+
+bool TicTacToeBoard::IsOver() const {
+    return gameState == GameState::AI_WON || gameState == GameState::USER_WON;
 }
 
 

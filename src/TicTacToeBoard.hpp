@@ -16,7 +16,9 @@
 enum GameState {
     USER_TURN,
     AI_TURN,
-    OVER
+    USER_WON,
+    AI_WON,
+    DRAW,
 } ;
 
 class TicTacToeBoard {
@@ -28,6 +30,7 @@ class TicTacToeBoard {
     std::optional<tt::Position> SquareOnBoard(SDL_Point point) const;
     void PerformTurn(const tt::Position &pos, SquareState state );
     bool IsOccupied(const tt::Position &pos) const;
+    bool IsOver() const;
     GameState GetGameState() const;
 
     ~TicTacToeBoard() = default;
@@ -35,12 +38,15 @@ class TicTacToeBoard {
     void renderSquares(SDL_Renderer *renderer) const;
     void renderLines(SDL_Renderer *renderer) const;
     TicTacToeSquare &squareAt(const tt::Position &pos) const;
+    TicTacToeSquare &squareAt(int r, int c) const;
     std::vector<std::reference_wrapper<const TicTacToeSquare>> allSquares() const ;
+    void evaluateNewState();
+    void setWinnerFromSquareState(int i, int j) ;
 
     std::array<std::array<std::unique_ptr<TicTacToeSquare>, Config::COLS>, Config::ROWS> squares;
     SharedContext *context = nullptr;
     std::vector<SDL_Rect> lines = {};
-    bool currentPlayerIsX = true;
+
     GameState gameState;
 
 

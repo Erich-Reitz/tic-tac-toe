@@ -44,6 +44,18 @@ class TicTacToeSquare : public Object {
         state = newState;
     }
 
+    bool IsEmpty() const {
+        return state == SquareState::EMPTY;
+    }
+
+    bool NotEmpty() const {
+        return !IsEmpty();
+    }
+
+    SquareState State() const {
+        return state;
+    }
+
   private:
     tt::Position pos = {0, 0};
     SquareState state = SquareState::EMPTY;

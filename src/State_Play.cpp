@@ -36,7 +36,10 @@ void State_Play::Update() {
     case GameState::AI_TURN:
         ai.MakeMove(*board);
         break;
-    case GameState::OVER:
+    case GameState::USER_WON:
+        context->window->SetDone();
+        break;
+    case GameState::AI_WON:
         context->window->SetDone();
         break;
     default:
@@ -49,11 +52,15 @@ void State_Play::handleClick(SDL_Point point) {
     if (board->GetGameState() != GameState::USER_TURN) {
         return;
     }
-    const auto clickedPosition = board->SquareOnBoard(point);
-    if (!clickedPosition.has_value()) {
+    const auto optClickedPosition = board->SquareOnBoard(point);
+    if (!optClickedPosition.has_value()) {
         return;
     }
-    board->PerformTurn(clickedPosition.value(), context->userRequestedState) ;
+    const auto clickedPosition = optClickedPosition.value();
+    if (board->IsOccupied(clickedPosition)) {
+        return;
+    }
+    board->PerformTurn(clickedPosition, context->userRequestedState) ;
 }
 
 
