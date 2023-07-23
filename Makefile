@@ -1,10 +1,10 @@
 CXX := g++ 
-CXXFLAGS := -Wall -Werror -Wextra -pedantic -Wconversion -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -Wno-missing-braces -Wold-style-cast 
+CXXFLAGS := -Wall -Wextra -pedantic -Wconversion -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -Wno-missing-braces -Wold-style-cast  
 SRC_DIR = ./src
 OBJ_DIR := ./obj
 SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp) 
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
-LDFLAGS := -lSDL2
+LDFLAGS := -lSDL2 -lSDL2_ttf 
 
 ASTYLEOPS := --mode=c --attach-return-type --align-pointer=name  --indent=spaces=4 --max-code-length=140 --break-after-logical 
 

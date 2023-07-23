@@ -20,7 +20,7 @@ class BaseState {
     virtual void Render() = 0;
 
     void SetTransparent(const bool &p_transparent);
-    bool IsTransparent()const ; 
+    bool IsTransparent()const ;
     void SetTranscendent(const bool &p_transcendence);
     bool IsTranscendent()const ;
 

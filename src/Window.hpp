@@ -19,6 +19,8 @@ class Window {
     void BeginDraw();
     void EndDraw();
     void Update();
+
+    void SetDone() ;
     [[nodiscard]] bool Done() const;
   private:
     //The window we'll be rendering to

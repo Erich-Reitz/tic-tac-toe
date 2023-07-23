@@ -72,6 +72,10 @@ void Window::Update() {
     }
 }
 
+void Window::SetDone() {
+    EXIT_GRACEFUL;
+}
+
 bool Window::Done() const {
     return this->done;
 }

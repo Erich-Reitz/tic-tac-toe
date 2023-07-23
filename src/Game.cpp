@@ -6,9 +6,9 @@ Game::Game() {
     /** TODO: Fix order dependency */
     this->window = std::make_unique<Window>("TicTacToe", size, &sharedContext);
     this->sharedContext.window = this->window.get();
-    this->sharedContext.config = new tt::Config();
+    this->sharedContext.config = new Config();
+    this->sharedContext.resMgr = new Resource_Manager();
     this->stateMgr = std::make_unique<StateManager>(&sharedContext);
-    this->stateMgr->SwitchTo(StateType::Play);
 }
 
 void Game::Update() {

@@ -8,7 +8,7 @@
 #define M_LIGHT_YELLOW 255, 255, 224, 255
 
 
-namespace tt {
+
 class Config {
   public:
     Config() = default;
@@ -21,7 +21,6 @@ class Config {
     const SDL_Color BLUE = {M_BLUE};
     const SDL_Color LIGHT_PINK = {M_LIGHT_PINK};
     const SDL_Color LIGHT_YELLOW = {M_LIGHT_YELLOW};
-
 
 
     SDL_Color BackgroundColor() {
@@ -44,4 +43,3 @@ class Config {
 };
 
 
-}

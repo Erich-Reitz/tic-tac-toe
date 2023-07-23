@@ -7,6 +7,7 @@
 #include "TicTacToeBoard.hpp"
 #include "Shared_Context.hpp"
 #include "StateManager.hpp"
+#include "ResourceManager.hpp"
 
 
 class Game {

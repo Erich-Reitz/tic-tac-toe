@@ -1,6 +1,8 @@
 
 #include <SDL2/SDL.h>
 
+
+
 #include "Shared_Context.hpp"
 #include "TicTacToeBoard.hpp"
 #include "SetRenderDrawColor.hpp"
@@ -8,7 +10,7 @@
 
 
 
-namespace tt {
+
 
 typedef std::pair<SDL_Point, SDL_Point> LINE;
 SDL_Rect createRectFromLine(SDL_Point start, SDL_Point end, int thickness) {
@@ -48,59 +50,70 @@ std::vector<SDL_Rect> createLines( SDL_Point center, int squareWidth, int thickn
 }
 
 
-}
+
 
 
 TicTacToeBoard::TicTacToeBoard(SharedContext *sharedContext) : context(sharedContext) {
     auto center = context->window->Center();
-    this->lines = tt::createLines(center, tt::Config::SQUARE_WIDTH, tt::Config::LINE_THICKNESS);
-    for (int row = 0; row < tt::Config::ROWS; row++) {
-        for (int col = 0; col < tt::Config::COLS; col++) {
+    this->lines = createLines(center, Config::SQUARE_WIDTH, Config::LINE_THICKNESS);
+    for (int row = 0; row < Config::ROWS; row++) {
+        for (int col = 0; col < Config::COLS; col++) {
             tt::Position pos = {row, col};
-            auto squareX = center.x + (col - 1) *tt::Config::SQUARE_WIDTH;
-            auto squareY = center.y + (row - 1) *tt::Config::SQUARE_WIDTH;
+            auto squareX = center.x + (col - 1) *Config::SQUARE_WIDTH;
+            auto squareY = center.y + (row - 1) *Config::SQUARE_WIDTH;
             const auto centerOfSquare = SDL_Point{squareX, squareY};
-            auto const adjustedSqrWidth = static_cast<int> (tt::Config::SQUARE_WIDTH * .95);
+            auto const adjustedSqrWidth = static_cast<int> (Config::SQUARE_WIDTH * .98);
             squares[row][col] = std::make_unique<TicTacToeSquare>(pos, centerOfSquare, adjustedSqrWidth, context);
         }
     }
+    if (sharedContext->userRequestedState == SquareState::X) {
+        gameState = GameState::USER_TURN;
+    } else {
+        gameState = GameState::AI_TURN;
+    }
 }
 
 
+
+GameState TicTacToeBoard::GetGameState() const {
+    return gameState;
+}
 
 void TicTacToeBoard::Update() {
-    while (context->mouseClicks.size() != 0) {
-        auto click = context->mouseClicks.front();
-        handleClick(click);
-        context->mouseClicks.pop_front();
-    }
 }
 
-void TicTacToeBoard::handleClick(SDL_Point point) {
+std::optional<tt::Position> TicTacToeBoard::SquareOnBoard(SDL_Point point) const {
     for (const auto &square : allSquares()) {
         if (square.get().WithinBounds(point)) {
-            this->handleClickOnSquare(square.get().Position());
+            return square.get().Position();
         }
     }
+    return std::nullopt;
 }
-void TicTacToeBoard::handleClickOnSquare(const tt::Position &pos) {
-    auto &square = squareAt(pos);
-    if (square.IsOccupied()) {
-        return;
+
+
+void TicTacToeBoard::PerformTurn(const tt::Position &pos, SquareState state ) {
+    squareAt(pos).SetOccupiedBy(state);
+    if (gameState == GameState::USER_TURN) {
+        gameState = GameState::AI_TURN;
+    } else {
+        gameState = GameState::USER_TURN;
     }
-    square.SetOccupiedBy(currentPlayerIsX ? tt::SquareState::X : tt::SquareState::O);
-    currentPlayerIsX = !currentPlayerIsX;
+}
+
+bool TicTacToeBoard::IsOccupied(const tt::Position &pos) const {
+    return squareAt(pos).IsOccupied();
 }
 
 
-TicTacToeSquare &TicTacToeBoard::squareAt(const tt::Position &pos) {
+TicTacToeSquare &TicTacToeBoard::squareAt(const tt::Position &pos) const {
     return *squares.at(pos.r).at(pos.c);
 }
 
 
 std::vector<std::reference_wrapper<const TicTacToeSquare>> TicTacToeBoard::allSquares() const {
     std::vector<std::reference_wrapper<const TicTacToeSquare>> flattened;
-    flattened.reserve(tt::Config::ROWS * tt::Config::COLS);
+    flattened.reserve(Config::ROWS * Config::COLS);
     for (const auto &row : this->squares) {
         for (const auto &elem : row) {
             flattened.emplace_back(*elem);

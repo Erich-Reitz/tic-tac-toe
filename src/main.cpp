@@ -6,7 +6,6 @@
 #include "Game.hpp"
 
 
-namespace tt {
 
 void SDL_INIT() {
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
@@ -15,9 +14,17 @@ void SDL_INIT() {
     }
 }
 
-int main() {
+void TTF_INIT() {
+    if( TTF_Init() == -1 ) {
+        printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+        flush_exit_failure();
+    }
+}
+
+int tt_main() {
     //Initialize SDL
     SDL_INIT();
+    TTF_INIT();
     Game game;
     while(!game.GetWindow()->Done()) {
         game.HandleInput();
@@ -28,8 +35,8 @@ int main() {
     SDL_Quit();
     return EXIT_SUCCESS;
 }
-}
+
 
 int main() {
-    tt::main();
+    tt_main();
 }

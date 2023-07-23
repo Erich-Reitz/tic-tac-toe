@@ -1,10 +1,14 @@
 #include <algorithm>
 
 #include "StateManager.hpp"
+#include "State_Play.hpp"
+#include "State_Menu.hpp"
 
 StateManager::StateManager(SharedContext *p_shared)
     : m_shared(p_shared) {
+    RegisterState<State_Menu>(StateType::MainMenu);
     RegisterState<State_Play>(StateType::Play);
+    this->CreateState(StateType::MainMenu);
 }
 
 StateManager::~StateManager() {

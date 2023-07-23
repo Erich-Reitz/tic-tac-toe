@@ -1,10 +1,9 @@
 #pragma once
 
-#include <memory>
-
 
 #include "BaseState.hpp"
 #include "TicTacToeBoard.hpp"
+#include "AI_Player.hpp"
 
 class State_Play : public BaseState {
   public:
@@ -24,6 +23,7 @@ class State_Play : public BaseState {
 
 
   private:
+    void handleClick(SDL_Point point);
+    AI_Player ai;
     std::unique_ptr<TicTacToeBoard> board;
-    int player;
 };

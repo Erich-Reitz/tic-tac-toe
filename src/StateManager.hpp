@@ -4,7 +4,8 @@
 #include <functional>
 
 #include "Shared_Context.hpp"
-#include "State_Play.hpp"
+#include "BaseState.hpp"
+
 
 enum class StateType { MainMenu, Play };
 
