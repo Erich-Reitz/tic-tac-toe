@@ -3,7 +3,6 @@
 #include "tictactoe_exceptions.hpp"
 #include "TicTacToeBoard.hpp"
 
-#include <iostream>
 
 
 State_Play::State_Play(StateManager *p_stateManager)
@@ -60,10 +59,6 @@ void State_Play::handleClick(SDL_Point point) {
 
 void State_Play::Render() {
     this->board->Render();
-}
-
-void State_Play::MainMenu() {
-    stateMgr->SwitchTo(StateType::MainMenu);
 }
 
 void State_Play::Activate() {}

@@ -19,9 +19,6 @@ class State_Play : public BaseState {
     void Update() ;
     void Render() ;
 
-    void MainMenu();
-
-
   private:
     void handleClick(SDL_Point point);
     AI_Player ai;

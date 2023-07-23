@@ -1,5 +1,4 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
 
 #include <iostream>
 
@@ -36,7 +35,7 @@ void State_Menu::OnDestroy() {
 
 void State_Menu::handleClick(SDL_Point point)  {
     if (startMessage->WithinBounds(point)) {
-        stateMgr->SwitchTo(StateType::Play) ;
+        Play();
     } else if (quitMessage->WithinBounds(point)) {
         stateMgr->GetContext()->window->SetDone();
     }
