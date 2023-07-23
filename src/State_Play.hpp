@@ -18,9 +18,11 @@ class State_Play : public BaseState {
 
     void Update() ;
     void Render() ;
+    void HandleInput();
 
   private:
     void handleClick(SDL_Point point);
-    AI_Player ai;
+    std::unique_ptr<AI_Player>  ai;
     std::unique_ptr<TicTacToeBoard> board;
+    bool usersTurn = true;
 };

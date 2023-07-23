@@ -33,6 +33,8 @@ void State_Menu::OnDestroy() {
     delete this->helloMessage ;
 }
 
+
+
 void State_Menu::handleClick(SDL_Point point)  {
     if (startMessage->WithinBounds(point)) {
         Play();
@@ -41,13 +43,16 @@ void State_Menu::handleClick(SDL_Point point)  {
     }
 }
 
-void State_Menu::Update() {
+void State_Menu::HandleInput() {
     auto context = stateMgr->GetContext();
     while (context->mouseClicks.size() != 0) {
         auto click = context->mouseClicks.front();
         handleClick(click);
         context->mouseClicks.pop_front();
     }
+}
+
+void State_Menu::Update() {
 }
 
 

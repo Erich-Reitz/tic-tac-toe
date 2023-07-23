@@ -22,7 +22,7 @@ void TTF_INIT() {
 }
 
 int tt_main() {
-    //Initialize SDL
+
     SDL_INIT();
     TTF_INIT();
     Game game;
@@ -31,7 +31,7 @@ int tt_main() {
         game.Update();
         game.Render();
     }
-    //Quit SDL subsystems
+
     SDL_Quit();
     return EXIT_SUCCESS;
 }

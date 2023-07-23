@@ -16,6 +16,7 @@ class BaseState {
     virtual void Activate() = 0;
     virtual void Deactivate() = 0;
 
+    virtual void HandleInput() = 0;
     virtual void Update() = 0;
     virtual void Render() = 0;
 

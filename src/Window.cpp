@@ -1,6 +1,7 @@
 
 #include <SDL2/SDL.h>
 
+#include <iostream>
 #include <string>
 #include "Window.hpp"
 #include "flush_exit_failure.hpp"

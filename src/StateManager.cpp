@@ -40,6 +40,28 @@ void StateManager::Update() {
     }
 }
 
+void StateManager::HandleInput() {
+    if (m_states.empty()) {
+        return;
+    }
+    if (m_states.back().second->IsTranscendent() && m_states.size() > 1) {
+        auto itr = m_states.end();
+        while (itr != m_states.begin()) {
+            if (itr != m_states.end()) {
+                if (!itr->second->IsTranscendent()) {
+                    break;
+                }
+            }
+            --itr;
+        }
+        for (; itr != m_states.end(); ++itr) {
+            itr->second->HandleInput();
+        }
+    } else {
+        m_states.back().second->HandleInput();
+    }
+}
+
 void StateManager::Render() {
     if (m_states.empty()) {
         return;

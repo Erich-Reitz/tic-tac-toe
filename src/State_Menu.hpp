@@ -15,6 +15,7 @@ class State_Menu : public BaseState {
 
     void Update() ;
     void Render() ;
+    void HandleInput() ;
 
     void Play();
   private:

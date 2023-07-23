@@ -22,6 +22,7 @@ class StateManager {
     ~StateManager();
 
     void Update();
+    void HandleInput();
     void Render();
 
     void ProcessRequests();

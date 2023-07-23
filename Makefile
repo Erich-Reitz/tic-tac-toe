@@ -1,5 +1,5 @@
 CXX := g++ 
-CXXFLAGS := -Wall -Wextra -pedantic -Wconversion -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -Wno-missing-braces -Wold-style-cast  
+CXXFLAGS := -g -Wall -Wextra -pedantic -Wconversion -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -Wno-missing-braces -Wold-style-cast  
 SRC_DIR = ./src
 OBJ_DIR := ./obj
 SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp) 

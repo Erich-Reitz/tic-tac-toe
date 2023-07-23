@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 
 #include <algorithm>
+#include <iterator>
 
 #include "tictactoe_exceptions.hpp"
 #include "Shared_Context.hpp"
@@ -54,7 +55,7 @@ std::vector<SDL_Rect> createLines( SDL_Point center, int squareWidth, int thickn
 
 
 
-TicTacToeBoard::TicTacToeBoard(SharedContext *sharedContext) : context(sharedContext) {
+TicTacToeBoard::TicTacToeBoard(SharedContext *sharedContext) : context(sharedContext), gameState(GameState::PLAYING) {
     auto center = context->window->Center();
     this->lines = createLines(center, Config::SQUARE_WIDTH, Config::LINE_THICKNESS);
     for (int row = 0; row < Config::ROWS; row++) {
@@ -66,11 +67,6 @@ TicTacToeBoard::TicTacToeBoard(SharedContext *sharedContext) : context(sharedCon
             auto const adjustedSqrWidth = static_cast<int> (Config::SQUARE_WIDTH * .98);
             squares[row][col] = std::make_unique<TicTacToeSquare>(pos, centerOfSquare, adjustedSqrWidth, context);
         }
-    }
-    if (sharedContext->userRequestedState == SquareState::X) {
-        gameState = GameState::USER_TURN;
-    } else {
-        gameState = GameState::AI_TURN;
     }
 }
 
@@ -92,14 +88,13 @@ std::optional<tt::Position> TicTacToeBoard::SquareOnBoard(SDL_Point point) const
     return std::nullopt;
 }
 
-
+/** Use carefully: this will change turn*/
 void TicTacToeBoard::PerformTurn(const tt::Position &pos, SquareState state ) {
     squareAt(pos).SetOccupiedBy(state);
-    evaluateNewState();
+    determineIfGameIsOver();
 }
 
-
-void TicTacToeBoard::evaluateNewState()  {
+void TicTacToeBoard::determineIfGameIsOver()  {
     for (int r = 0; r < Config::ROWS; r++) {
         if (std::all_of(squares[r].begin(), squares[r].end(), [&](const auto &squarePtr) {
         const auto firstSqrState = squares[r][0]->State();
@@ -148,7 +143,7 @@ void TicTacToeBoard::evaluateNewState()  {
         gameState = GameState::DRAW;
         return;
     }
-    gameState = gameState == USER_TURN ? AI_TURN : USER_TURN;
+    gameState = GameState::PLAYING;
 }
 
 void TicTacToeBoard::setWinnerFromSquareState(int i, int j) {
@@ -175,9 +170,18 @@ TicTacToeSquare &TicTacToeBoard::squareAt(int r, int c) const {
 
 
 bool TicTacToeBoard::IsOver() const {
-    return gameState == GameState::AI_WON || gameState == GameState::USER_WON;
+    return gameState != GameState::PLAYING;
 }
 
+std::vector<tt::Position> TicTacToeBoard::FreeSquares() const {
+    std::vector<tt::Position> freeSquares;
+    for (const auto &square : allSquares()) {
+        if (!square.get().IsOccupied()) {
+            freeSquares.push_back(square.get().Position());
+        }
+    }
+    return freeSquares;
+}
 
 std::vector<std::reference_wrapper<const TicTacToeSquare>> TicTacToeBoard::allSquares() const {
     std::vector<std::reference_wrapper<const TicTacToeSquare>> flattened;

@@ -6,7 +6,9 @@
 
 
 State_Play::State_Play(StateManager *p_stateManager)
-    : BaseState(p_stateManager), ai(p_stateManager->GetContext()) {}
+    : BaseState(p_stateManager) {
+    ai = std::make_unique<AI_Player>(p_stateManager->GetContext());
+}
 
 State_Play::~State_Play() {}
 
@@ -21,37 +23,45 @@ void State_Play::OnCreate() {
 void State_Play::OnDestroy() {
 }
 
-void State_Play::Update() {
+
+void State_Play::HandleInput() {
     const auto context = stateMgr->GetContext();
     while (context->mouseClicks.size() != 0) {
         auto click = context->mouseClicks.front();
         handleClick(click);
         context->mouseClicks.pop_front();
     }
-    const auto state = board->GetGameState();
+}
+
+
+void State_Play::Update() {
+    auto state = board->GetGameState();
+    auto context = stateMgr->GetContext();
     switch (state) {
-    case GameState::USER_TURN:
-        board->Update();
-        break;
-    case GameState::AI_TURN:
-        ai.MakeMove(*board);
-        break;
     case GameState::USER_WON:
         context->window->SetDone();
         break;
     case GameState::AI_WON:
         context->window->SetDone();
         break;
+    case GameState::DRAW:
+        context->window->SetDone();
+        break;
+    case GameState::PLAYING: {
+        if (!usersTurn) {
+            ai->MakeMove(*board);
+            this->usersTurn = true;
+        }
+    }
+    break;
     default:
         break;
     }
+    board->Update();
 }
 
 void State_Play::handleClick(SDL_Point point) {
     const auto context = stateMgr->GetContext();
-    if (board->GetGameState() != GameState::USER_TURN) {
-        return;
-    }
     const auto optClickedPosition = board->SquareOnBoard(point);
     if (!optClickedPosition.has_value()) {
         return;
@@ -61,6 +71,7 @@ void State_Play::handleClick(SDL_Point point) {
         return;
     }
     board->PerformTurn(clickedPosition, context->userRequestedState) ;
+    this->usersTurn = false;
 }
 
 

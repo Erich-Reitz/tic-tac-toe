@@ -36,6 +36,7 @@ void Game::UpdateAndPrintFPS() {
 }
 
 void Game::HandleInput() {
+    this->stateMgr->HandleInput();
 }
 
 void Game::Render() {
