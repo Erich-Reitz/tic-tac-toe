@@ -88,7 +88,7 @@ std::optional<tt::Position> TicTacToeBoard::SquareOnBoard(SDL_Point point) const
     return std::nullopt;
 }
 
-/** Use carefully: this will change turn*/
+/** Use carefully: this will change gameState*/
 void TicTacToeBoard::PerformTurn(const tt::Position &pos, SquareState state ) {
     squareAt(pos).SetOccupiedBy(state);
     determineIfGameIsOver();

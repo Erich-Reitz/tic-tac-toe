@@ -41,7 +41,7 @@ class AI_Player {
         }
     }
     tt::Position findBestMove(TicTacToeBoard &board) {
-        std::pair<tt::Position, int> currentBest = std::make_pair(tt::Position {-1, -1}, -1000) ;
+        std::pair<tt::Position, int> currentBest = std::make_pair(tt::Position {-1, -1}, -10000) ;
         for (const auto pos : board.FreeSquares()) {
             board.PerformTurn(pos, selectedState);
             int eval = minimax(board, 0, false);

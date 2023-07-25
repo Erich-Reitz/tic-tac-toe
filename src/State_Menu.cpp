@@ -19,6 +19,7 @@ State_Menu::~State_Menu() = default;
 
 void State_Menu::OnCreate() {
     auto context = stateMgr->GetContext();
+    /** TODO: This could be a config variable*/
     auto font = context->resMgr->get_font("menu.ttf") ;
     const auto center = context->window->Center();
     const auto helloMsgPosition = SDL_Point {center.x, center.y - 150};
